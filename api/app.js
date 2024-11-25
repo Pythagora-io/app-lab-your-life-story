@@ -14,6 +14,7 @@ import authRoutes from './routes/authRoutes.js';
 import { authenticateWithSession } from './middlewares/authMiddleware.js';
 import apiRoutes from './routes/index.js';
 import connectDB from './config/database.js';
+import storyRoutes from './routes/storyRoutes.js'; // Added import for storyRoutes
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,8 +61,10 @@ app.use(authenticateWithSession);
 app.use(authRoutes);
 
 app.use(apiRoutes);
+app.use('/api', storyRoutes); // Added storyRoutes to the middleware chain
 
 app.use(express.static(path.join(__dirname, "..", "dist")));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // Serve static files from the uploads directory
 
 // Assume all other routes are frontend
 app.get(/.*/, async (req, res) => {

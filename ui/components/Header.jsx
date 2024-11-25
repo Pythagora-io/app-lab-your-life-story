@@ -29,20 +29,26 @@ const Header = () => {
           <Button variant="ghost">Home</Button>
         </Link>
         <nav className="flex items-center">
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <>
               <span className="mr-4">{userEmail}</span>
+              <Link to="/my-stories" className="mr-4">
+                <Button variant="ghost">My Stories</Button>
+              </Link>
               <Link to="/profile" className="mr-4">
                 <Button variant="ghost">Profile</Button>
               </Link>
+              <Button onClick={handleLogout}>Logout</Button>
             </>
-          )}
-          {isLoggedIn ? (
-            <Button onClick={handleLogout}>Logout</Button>
           ) : (
-            <Link to="/login">
-              <Button>Login</Button>
-            </Link>
+            <>
+              <Link to="/login" className="mr-4">
+                <Button>Login</Button>
+              </Link>
+              <Link to="/register">
+                <Button>Register</Button>
+              </Link>
+            </>
           )}
         </nav>
       </div>

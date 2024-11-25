@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import dalleApiKeyRoutes from './dalleApiKeyRoutes.js';
+import storyRoutes from './storyRoutes.js';
 
 const router = Router();
 
-// Define API routes here
-// All API routes must have /api/ prefix to avoid conflicts with the UI/frontend.
 router.use('/api', dalleApiKeyRoutes);
+router.use('/api', storyRoutes);
 
 export default router;

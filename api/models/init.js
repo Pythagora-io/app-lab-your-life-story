@@ -10,4 +10,13 @@ const userSchema = new mongoose.Schema({
   dalleApiKey: { type: String, default: '' }, // Add this line
 }, { timestamps: true });
 
+const storySchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true },
+  images: [{ type: String, required: true }],
+  imageSummaries: [{ type: String }],
+  createdAt: { type: Date, default: Date.now },
+});
+
 export const User = mongoose.model('User', userSchema);
+export const Story = mongoose.model('Story', storySchema);
