@@ -18,7 +18,9 @@ const storySchema = new mongoose.Schema({
   generatedStory: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-});
+  audioPath: { type: String },
+  isImproved: { type: Boolean, default: false }, // Add this line
+}, { timestamps: true });
 
 export const User = mongoose.model('User', userSchema);
 export const Story = mongoose.model('Story', storySchema);

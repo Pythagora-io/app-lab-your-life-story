@@ -18,6 +18,7 @@ class StoryService {
         title,
         images: relativeImagePaths,
         imageSummaries,
+        isImproved: false, // Added isImproved field with default false
       });
       await story.save();
       console.log('Story created successfully:', story);
@@ -101,9 +102,35 @@ class StoryService {
     const improvedStory = await OpenAIService.improveStory(userId, story.generatedStory, story.imageSummaries, instruction);
 
     story.generatedStory = improvedStory;
+    story.isImproved = true; // Set the flag in the database
     await story.save();
 
     return improvedStory;
+  }
+
+  static async narrateStory(storyId, userId) {
+    try {
+      const story = await Story.findOne({ _id: storyId, userId: userId });
+      if (!story) {
+        throw new Error('Story not found');
+      }
+
+      if (!story.generatedStory) {
+        throw new Error('Story text not generated yet');
+      }
+
+      if (story.isImproved || !story.audioPath) {
+        const audioPath = await OpenAIService.convertTextToSpeech(userId, story.generatedStory);
+        story.audioPath = audioPath;
+        story.isImproved = false; // Reset the flag after generating new audio
+        await story.save();
+      }
+
+      return story.audioPath;
+    } catch (error) {
+      console.error('Error narrating story:', error);
+      throw error;
+    }
   }
 }
 

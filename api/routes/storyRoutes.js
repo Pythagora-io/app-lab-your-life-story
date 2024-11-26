@@ -109,4 +109,20 @@ router.post('/stories/:id/improve', requireUser, async (req, res) => {
   }
 });
 
+router.post('/stories/:id/narrate', requireUser, async (req, res) => {
+  try {
+    const audioPath = await StoryService.narrateStory(req.params.id, req.user._id);
+    res.json({ audioPath });
+  } catch (error) {
+    console.error('Error narrating story:', error);
+    if (error.message.includes('API key not found') || error.message.includes('API key not set')) {
+      res.status(400).json({ error: 'OpenAI API key not set. Please set your API key in the profile page.' });
+    } else if (error.message.includes('invalid') || error.message.includes('expired')) {
+      res.status(400).json({ error: 'Invalid or expired OpenAI API key. Please update your API key in the profile page.' });
+    } else {
+      res.status(500).json({ error: 'An error occurred while narrating the story' });
+    }
+  }
+});
+
 export default router;
