@@ -1,3 +1,5 @@
+@import 'animate.css';
+@import './styles/animations.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -79,4 +81,3 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
-

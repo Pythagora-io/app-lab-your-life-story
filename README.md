@@ -1,77 +1,124 @@
-```markdown
 # Your Life Story
 
-Your Life Story is an innovative application that allows users to create detailed, compelling stories based on images they upload. By leveraging the power of the DALL-E and OpenAI APIs, the app analyzes the images to generate detailed summaries, which are then used to create engaging narratives. Users can also store their DALL-E API keys, verify them, and generate or improve stories with ease. The app features a modern, flashy UI/UX with subtle animations and transitions, providing an out-of-the-world experience.
+Your Life Story is an innovative application that allows users to create captivating narratives based on uploaded images. Using the DALL-E and OpenAI APIs, the app analyzes images to generate detailed summaries, which are then used to craft engaging stories. Users can also listen to these stories narrated in a lifelike AI voice.
 
 ## Overview
 
-Your Life Story is built using a modern tech stack to ensure a seamless and responsive user experience. The project is structured into a frontend and backend, with the following key technologies:
+The project is built using a modern tech stack with a React frontend and a Node/Express backend. It leverages MongoDB for data storage and integrates various APIs for image analysis and story generation. The frontend uses Vite for development and Tailwind CSS for styling, while the backend employs Mongoose for MongoDB interactions and Multer for file uploads.
 
-- **Frontend**: ReactJS, Vite, Tailwind CSS, shadcn-ui, animate.css, Bootstrap, EJS
-- **Backend**: Node.js, Express, MongoDB, Mongoose, Multer, OpenAI API, CORS, Body-parser
-- **Authentication**: Token-based authentication using opaque bearer tokens
-- **Deployment**: Vite devserver for frontend, Nodemon for backend, Concurrently to run both servers
+### Technologies Used
+
+- **Frontend:**
+  - React
+  - Vite
+  - Tailwind CSS
+  - animate.css
+  - bootstrap
+  - ejs
+  - react-router-dom
+
+- **Backend:**
+  - Node.js
+  - Express
+  - MongoDB
+  - Mongoose
+  - Multer
+  - OpenAI API client library
+  - body-parser
+  - cors
 
 ### Project Structure
 
-- `api/`: Contains the Express-based backend code
-- `ui/`: Contains the ReactJS-based frontend code
-- `public/`: Static assets
-- `dist/`: Build output for the frontend
-- Configuration files: `.babelrc`, `.env`, `.eslintrc.json`, `.gitignore`, `package.json`, `postcss.config.js`, `tailwind.config.js`, `vite.config.js`
+- **Frontend:**
+  - `ui/`: Contains the React frontend code.
+    - `ui/pages/`: Page components.
+    - `ui/components/`: Reusable UI components.
+    - `ui/styles/`: Styling files.
+    - `ui/lib/`: Utility functions.
+    - `ui/main.jsx`: Main entry point for the frontend.
+
+- **Backend:**
+  - `api/`: Contains the Express backend code.
+    - `api/routes/`: API route handlers.
+    - `api/controllers/`: Controllers for handling business logic.
+    - `api/services/`: Service layer for interacting with external APIs and database.
+    - `api/models/`: Mongoose models.
+    - `api/middlewares/`: Middleware functions.
+    - `api/utils/`: Utility functions.
+    - `api/app.js`: Main Express app configuration.
+    - `server.js`: Entry point for the backend server.
 
 ## Features
 
-- **Image Upload**: Users can upload images within a story.
-- **Image Analysis**: The app uses the DALL-E API to analyze images and generate detailed summaries.
-- **Story Generation**: Based on the image summaries, the app generates engaging stories using the OpenAI API.
-- **Story Management**: Users can create and delete multiple stories.
-- **API Key Management**: Users can store and verify their DALL-E API keys via the profile page.
-- **Story Improvement**: Users can provide instructions to improve the generated stories.
-- **Text-to-Voice**: The app provides a play button to narrate the stories using OpenAI's text-to-voice API.
-- **Modern UI/UX**: The app features a modern, flashy design with subtle animations using animate.css and Bootstrap.
+- **Image Upload and Analysis:**
+  - Users can upload images within a story.
+  - Images are analyzed using the DALL-E API to generate detailed summaries.
+
+- **Story Generation:**
+  - Summaries of the last 10 posts are used to generate compelling stories using the OpenAI API.
+  - Users can provide instructions to improve the generated story.
+
+- **Narration:**
+  - Stories can be narrated in a lifelike AI voice with emotions and tone using the OpenAI text-to-voice API.
+
+- **User Management:**
+  - Users can store and verify their DALL-E API key through the profile page.
+  - Token-based authentication for secure user management.
+
+- **Story Management:**
+  - Users can create and delete multiple stories.
+  - No edit functionality is provided in the MVP.
+
+- **Modern UI/UX:**
+  - Subtle animations and transitions using animate.css.
+  - Responsive and mobile-first design with Tailwind CSS and bootstrap.
 
 ## Getting Started
 
 ### Requirements
 
-To run the project, you will need the following technologies installed on your computer:
-
-- Node.js (v14 or later)
-- MongoDB (local installation or cloud service like MongoDB Atlas)
+- Node.js
+- MongoDB (local installation or MongoDB Atlas)
+- npm (Node package manager)
 
 ### Quickstart
 
-1. **Clone the repository**:
-    ```sh
-    git clone <repository_url>
-    cd <repository_directory>
-    ```
+1. **Clone the Repository:**
+   ```sh
+   git clone <repository-url>
+   cd your-life-story
+   ```
 
-2. **Install dependencies**:
-    ```sh
-    npm install
-    ```
+2. **Install Dependencies:**
+   ```sh
+   npm install
+   cd ui
+   npm install
+   cd ..
+   ```
 
-3. **Set up environment variables**:
-    Create a `.env` file in the project root and add the required environment variables:
-    ```sh
-    NODE_ENV=development
-    LOG_LEVEL=debug
-    PORT=3000
-    DATABASE_URL=<your_mongodb_connection_string>
-    SESSION_SECRET=<your_session_secret>
-    ```
+3. **Set Up Environment Variables:**
+   - Create a `.env` file in the project root and add the following environment variables:
+     ```env
+     NODE_ENV=development
+     LOG_LEVEL=debug
+     PORT=3000
+     DATABASE_URL=<your-mongodb-url>
+     SESSION_SECRET=<your-session-secret>
+     ```
 
-4. **Start the development servers**:
-    ```sh
-    npm run dev
-    ```
+4. **Run the Development Server:**
+   ```sh
+   npm run dev
+   ```
 
-5. **Access the application**:
-    Open your browser and navigate to `http://localhost:5173`.
+   This command will start both the frontend and backend servers concurrently.
+
+5. **Access the Application:**
+   - Open your browser and navigate to `http://localhost:3000`.
 
 ### License
 
-The project is proprietary (not open source). All rights reserved. Copyright (c) 2024.
-```
+The project is open source, licensed under the MIT License. See the [LICENSE](LICENSE).
+
+Copyright © 2024 Pythagora-io.

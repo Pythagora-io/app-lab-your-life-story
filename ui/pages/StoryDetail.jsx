@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { AlertDestructive } from '@/components/ui/alert';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -158,7 +159,7 @@ const StoryDetail = () => {
         <CardContent>
           {story.audioPath && (
             <div className="mt-4">
-              <input
+              <Input
                 type="range"
                 min="0"
                 max={duration}
@@ -218,12 +219,12 @@ const StoryDetail = () => {
           </p>
         </CardHeader>
         <CardContent>
-          <input
+          <Input
             type="text"
             placeholder="Enter instructions to improve the story"
             value={instruction}
             onChange={(e) => setInstruction(e.target.value)}
-            className="input mb-4"
+            className="mb-4"
           />
           <Button
             onClick={handleImproveStory}

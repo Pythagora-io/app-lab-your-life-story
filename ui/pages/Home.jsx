@@ -26,7 +26,7 @@ function Home() {
   }, [isLoggedIn]);
 
   return (
-    <div id="homePage" className="flex flex-col items-center justify-center min-h-screen">
+    <div id="homePage" className="flex flex-col items-center justify-center min-h-screen animate__animated animate__fadeIn">
       <h1 className="text-4xl font-bold mb-6">Home Page</h1>
       {isLoggedIn && userEmail ? (
         <p className="text-xl mb-6">Welcome, {userEmail}!</p>

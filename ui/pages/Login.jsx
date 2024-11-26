@@ -19,6 +19,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
   const { setIsLoggedIn, setUserEmail } = useAuth();
 
@@ -26,6 +28,21 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setEmailError(false);
+    setPasswordError(false);
+
+    if (!email) {
+      setEmailError(true);
+    }
+    if (!password) {
+      setPasswordError(true);
+    }
+
+    if (!email || !password) {
+      setLoading(false);
+      return;
+    }
+
     try {
       console.log('Attempting login');
       const response = await axios.post('/api/auth/login', { email, password }, { withCredentials: true });
@@ -36,13 +53,18 @@ export default function Login() {
     } catch (error) {
       console.error('Login error:', error.response?.data?.error || 'An unexpected error occurred', error);
       setError(error.response?.data?.error || 'An unexpected error occurred');
+      if (error.response?.data?.field === 'email') {
+        setEmailError(true);
+      } else if (error.response?.data?.field === 'password') {
+        setPasswordError(true);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div id="loginPage" className="w-full h-screen flex items-center justify-center px-4">
+    <div id="loginPage" className="w-full h-screen flex items-center justify-center px-4 animate__animated animate__fadeIn">
       <Card className="mx-auto max-w-sm">
         {error && <AlertDestructive title="Login Error" description={error} />}
         <CardHeader>
@@ -62,6 +84,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                error={emailError}
               />
             </div>
             <div className="grid gap-2">
@@ -77,6 +100,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                error={passwordError}
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>

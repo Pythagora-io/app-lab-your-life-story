@@ -18,27 +18,49 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setEmailError(false);
+    setPasswordError(false);
+
+    if (!email) {
+      setEmailError(true);
+    }
+    if (!password) {
+      setPasswordError(true);
+    }
+
+    if (!email || !password) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post('/api/auth/register', { email, password });
       if (response.data) {
         navigate('/login');
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Registration error:', error.response?.data?.error || 'An unexpected error occurred', error);
       setError(error.response?.data?.error || 'An unexpected error occurred');
+      if (error.response?.data?.field === 'email') {
+        setEmailError(true);
+      } else if (error.response?.data?.field === 'password') {
+        setPasswordError(true);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div id="registerPage" className="w-full h-screen flex items-center justify-center px-4">
+    <div id="registerPage" className="w-full h-screen flex items-center justify-center px-4 animate__animated animate__fadeIn">
       <Card className="mx-auto max-w-sm">
         {error && <AlertDestructive title="Registration Error" description={error} />}
         <form onSubmit={handleSubmit}>
@@ -59,6 +81,7 @@ export default function Register() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  error={emailError}
                 />
               </div>
               <div className="grid gap-2">
@@ -69,6 +92,7 @@ export default function Register() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  error={passwordError}
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>

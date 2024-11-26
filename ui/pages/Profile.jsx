@@ -10,6 +10,7 @@ export default function Profile() {
   const [dalleApiKey, setDalleApiKey] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationResult, setVerificationResult] = useState(null);
+  const [apiKeyError, setApiKeyError] = useState(false);
 
   useEffect(() => {
     const fetchDalleApiKey = async () => {
@@ -28,6 +29,13 @@ export default function Profile() {
     e.preventDefault();
     setIsVerifying(true);
     setVerificationResult(null);
+    setApiKeyError(false);
+
+    if (!dalleApiKey) {
+      setApiKeyError(true);
+      setIsVerifying(false);
+      return;
+    }
 
     try {
       // Verify the API key
@@ -39,10 +47,12 @@ export default function Profile() {
         setVerificationResult({ success: true, message: 'DALL-E API Key verified and saved successfully.' });
       } else {
         setVerificationResult({ success: false, message: 'Invalid DALL-E API Key. Please check and try again.' });
+        setApiKeyError(true);
       }
     } catch (error) {
       console.error('Error verifying or saving DALL-E API Key:', error);
       setVerificationResult({ success: false, message: 'Error verifying or saving DALL-E API Key. Please try again.' });
+      setApiKeyError(true);
     } finally {
       setIsVerifying(false);
     }
@@ -65,6 +75,7 @@ export default function Profile() {
                   value={dalleApiKey}
                   onChange={(e) => setDalleApiKey(e.target.value)}
                   placeholder="Enter your DALL-E API key"
+                  error={apiKeyError}
                 />
               </div>
               <Button type="submit" disabled={isVerifying}>
