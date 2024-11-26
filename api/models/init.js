@@ -14,8 +14,10 @@ const storySchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   title: { type: String, required: true },
   images: [{ type: String, required: true }],
-  imageSummaries: [{ type: String }],
+  imageSummaries: [{ type: String, required: true }],
+  generatedStory: { type: String },
   createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 export const User = mongoose.model('User', userSchema);

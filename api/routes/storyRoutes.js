@@ -82,4 +82,31 @@ router.delete('/stories/:id', requireUser, async (req, res) => {
   }
 });
 
+router.post('/stories/:id/generate', requireUser, async (req, res) => {
+  try {
+    const story = await StoryService.generateStory(req.params.id, req.user._id);
+    res.json(story);
+  } catch (error) {
+    console.error('Error generating story:', error);
+    if (error.message.includes('API key not found') || error.message.includes('API key not set')) {
+      res.status(400).json({ error: 'DALL-E API key not set. Please set your API key in the profile page.' });
+    } else if (error.message.includes('invalid') || error.message.includes('expired')) {
+      res.status(400).json({ error: 'Invalid or expired DALL-E API key. Please update your API key in the profile page.' });
+    } else {
+      res.status(500).json({ error: 'An error occurred while generating the story' });
+    }
+  }
+});
+
+router.post('/stories/:id/improve', requireUser, async (req, res) => {
+  try {
+    const { instruction } = req.body;
+    const improvedStory = await StoryService.improveStory(req.params.id, req.user._id, instruction);
+    res.json({ improvedStory });
+  } catch (error) {
+    console.error('Error improving story:', error);
+    res.status(500).json({ error: 'An error occurred while improving the story' });
+  }
+});
+
 export default router;

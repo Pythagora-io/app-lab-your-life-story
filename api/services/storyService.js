@@ -1,5 +1,6 @@
 import { Story } from '../models/init.js';
 import DalleService from './dalleService.js';
+import OpenAIService from './openaiService.js';
 
 class StoryService {
   static async createStory(userId, title, imagePaths) {
@@ -66,6 +67,43 @@ class StoryService {
       console.error('Error in getStoryById:', error);
       throw error;
     }
+  }
+
+  static async generateStory(storyId, userId) {
+    try {
+      const story = await Story.findOne({ _id: storyId, userId });
+      if (!story) {
+        throw new Error('Story not found');
+      }
+
+      const generatedStory = await OpenAIService.generateStory(userId, story.imageSummaries);
+
+      story.generatedStory = generatedStory;
+      await story.save();
+
+      console.log(`Generated story for story ID ${storyId}`);
+      return story;
+    } catch (error) {
+      console.error('Error in generateStory:', error);
+      if (error.message === 'OpenAI API key not found for user') {
+        throw new Error('DALL-E API key not set. Please set your API key in the profile page.');
+      }
+      throw error;
+    }
+  }
+
+  static async improveStory(storyId, userId, instruction) {
+    const story = await this.getStoryById(storyId, userId);
+    if (!story) {
+      throw new Error('Story not found');
+    }
+
+    const improvedStory = await OpenAIService.improveStory(userId, story.generatedStory, story.imageSummaries, instruction);
+
+    story.generatedStory = improvedStory;
+    await story.save();
+
+    return improvedStory;
   }
 }
 

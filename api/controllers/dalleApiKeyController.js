@@ -32,17 +32,21 @@ export const retrieveDalleApiKey = async (req, res) => {
 };
 
 export const verifyDalleApiKey = async (req, res) => {
+  console.log('Verifying DALL-E API key:', req.body);
   const { dalleApiKey } = req.body;
 
   if (!dalleApiKey) {
+    console.log('DALL-E API key is empty');
     return res.status(400).json({ error: 'DALL-E API key is required' });
   }
 
   const openai = new OpenAI({ apiKey: dalleApiKey });
 
   try {
+    console.log('Attempting to verify DALL-E API key');
     // Attempt to make a simple request to verify the API key
     await openai.models.list();
+    console.log('DALL-E API key verified successfully');
     res.json({ valid: true, message: 'DALL-E API key is valid' });
   } catch (error) {
     console.error('Error verifying DALL-E API key:', error);
